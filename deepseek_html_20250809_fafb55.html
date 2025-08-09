@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Calculator - User</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --primary: linear-gradient(135deg, #ff6b8b, #ff8e53, #6b66ff);
+      --secondary: #ffffff;
+      --accent: #ff4081;
+      --text: #333333;
+      --light-text: #f5f5f5;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background: var(--primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      flex: 1;
+    }
+    
+    /* Login Screen */
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+    }
+    
+    .login-box {
+      background: var(--secondary);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .login-title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ff6b8b, #ff8e53);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .login-btn {
+      background: #4285F4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .login-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .login-btn:active {
+      transform: translateY(1px);
+    }
+    
+    .login-btn img {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+    
+    /* Main App */
+    .app {
+      display: none;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      min-height: 80vh;
+    }
+    
+    .header {
+      background: var(--primary);
+      color: var(--light-text);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .profile-btn {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .profile-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+    
+    .profile-btn img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    
+    .nav-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 5px;
+      margin: 20px auto;
+      max-width: 400px;
+    }
+    
+    .nav-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-tab.active {
+      background: var(--secondary);
+      color: var(--accent);
+      font-weight: 500;
+    }
+    
+    .tab-content {
+      padding: 20px;
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    /* Calculator Form */
+    .calculator-form {
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.2);
+    }
+    
+    .calculate-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+    }
+    
+    .calculate-btn:hover {
+      background: #e91e63;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .calculate-btn:active {
+      transform: translateY(1px);
+    }
+    
+    /* Result Page */
+    .result-container {
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .heart-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 30px;
+    }
+    
+    .heart {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      transform: rotate(45deg);
+      animation: pulse 1.5s infinite;
+    }
+    
+    .heart:before, .heart:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    
+    .heart:before {
+      top: -50%;
+      left: 0;
+    }
+    
+    .heart:after {
+      top: 0;
+      left: -50%;
+    }
+    
+    .percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      color: white;
+      font-size: 3rem;
+      font-weight: bold;
+      z-index: 10;
+    }
+    
+    .love-message {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: var(--accent);
+      font-style: italic;
+    }
+    
+    .names-display {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    
+    /* History Page */
+    .history-list {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .history-item {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .history-info {
+      flex: 1;
+    }
+    
+    .history-names {
+      font-weight: 500;
+      color: var(--accent);
+    }
+    
+    .history-percentage {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+    
+    .history-date {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    
+    .delete-btn {
+      background: #ff5252;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .delete-btn:hover {
+      background: #ff1744;
+      transform: scale(1.1);
+    }
+    
+    .clear-all-btn {
+      background: #ff5252;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .clear-all-btn:hover {
+      background: #ff1744;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Profile Page */
+    .profile-container {
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid var(--accent);
+    }
+    
+    .profile-name {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    
+    .profile-email {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    
+    .logout-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .logout-btn:hover {
+      background: #e91e63;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: rotate(45deg) scale(1); }
+      50% { transform: rotate(45deg) scale(1.05); }
+      100% { transform: rotate(45deg) scale(1); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .login-box {
+        padding: 30px 20px;
+      }
+      
+      .app {
+        border-radius: 0;
+      }
+      
+      .heart-container {
+        width: 150px;
+        height: 150px;
+      }
+      
+      .percentage {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div class="login-container" id="login-container">
+    <div class="login-box">
+      <h1 class="login-title">Love Calculator</h1>
+      <p>Find out your love compatibility with your partner</p>
+      <button class="login-btn" id="google-login">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
+        Sign in with Google
+      </button>
+    </div>
+  </div>
+  
+  <!-- Main App (hidden until login) -->
+  <div class="container">
+    <div class="app" id="app">
+      <div class="header">
+        <h1>Love Calculator</h1>
+        <button class="profile-btn" id="profile-btn">
+          <img id="user-photo" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Profile">
+        </button>
+        <div class="nav-tabs">
+          <div class="nav-tab active" data-tab="calculator">Calculator</div>
+          <div class="nav-tab" data-tab="history">History</div>
+        </div>
+      </div>
+      
+      <!-- Calculator Tab -->
+      <div class="tab-content active" id="calculator-tab">
+        <form class="calculator-form" id="love-form">
+          <div class="form-group">
+            <label for="lover-name">Your Name</label>
+            <input type="text" id="lover-name" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label for="partner-name">Partner's Name</label>
+            <input type="text" id="partner-name" placeholder="Enter partner's name" required>
+          </div>
+          <button type="submit" class="calculate-btn">Calculate Love %</button>
+        </form>
+      </div>
+      
+      <!-- Result Tab (hidden by default) -->
+      <div class="tab-content" id="result-tab">
+        <div class="result-container">
+          <div class="names-display" id="names-display"></div>
+          <div class="heart-container">
+            <div class="heart"></div>
+            <div class="percentage" id="love-percentage">0%</div>
+          </div>
+          <div class="love-message" id="love-message"></div>
+          <button class="calculate-btn" id="back-btn" style="margin-top: 30px;">Back to Calculator</button>
+        </div>
+      </div>
+      
+      <!-- History Tab -->
+      <div class="tab-content" id="history-tab">
+        <div class="history-list" id="history-list">
+          <!-- History items will be added here dynamically -->
+        </div>
+        <button class="clear-all-btn" id="clear-all-btn">Clear All History</button>
+      </div>
+      
+      <!-- Profile Tab (hidden by default) -->
+      <div class="tab-content" id="profile-tab">
+        <div class="profile-container">
+          <img class="profile-pic" id="profile-pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Profile">
+          <h2 class="profile-name" id="profile-name">User Name</h2>
+          <p class="profile-email" id="profile-email">user@example.com</p>
+          <button class="logout-btn" id="logout-btn">Log Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTvWKR6pt8HrHoiDHo3wqoSXtXdXJjHHQ",
+      authDomain: "priya-ai-q14sj.firebaseapp.com",
+      projectId: "priya-ai-q14sj",
+      storageBucket: "priya-ai-q14sj.appspot.com",
+      messagingSenderId: "113852032496",
+      appId: "1:113852032496:web:a6156f264323f54d9ae935"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    // DOM Elements
+    const loginContainer = document.getElementById('login-container');
+    const appContainer = document.getElementById('app');
+    const googleLoginBtn = document.getElementById('google-login');
+    const profileBtn = document.getElementById('profile-btn');
+    const navTabs = document.querySelectorAll('.nav-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const loveForm = document.getElementById('love-form');
+    const resultTab = document.getElementById('result-tab');
+    const backBtn = document.getElementById('back-btn');
+    const historyList = document.getElementById('history-list');
+    const clearAllBtn = document.getElementById('clear-all-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const userPhoto = document.getElementById('user-photo');
+    const profilePic = document.getElementById('profile-pic');
+    const profileName = document.getElementById('profile-name');
+    const profileEmail = document.getElementById('profile-email');
+    const lovePercentage = document.getElementById('love-percentage');
+    const loveMessage = document.getElementById('love-message');
+    const namesDisplay = document.getElementById('names-display');
+    
+    // Love messages
+    const loveMessages = [
+      "A perfect match made in heaven!",
+      "True love never dies!",
+      "You two are meant to be together!",
+      "Love is in the air!",
+      "A beautiful connection!",
+      "Soulmates forever!",
+      "Your hearts beat as one!",
+      "Destined to be together!",
+      "A love that lasts a lifetime!",
+      "Perfect harmony of hearts!"
+    ];
+    
+    // Current user data
+    let currentUser = null;
+    let userHistory = [];
+    
+    // Initialize the app
+    function initApp() {
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          // User is signed in
+          currentUser = user;
+          showApp();
+          loadUserHistory();
+        } else {
+          // User is signed out
+          currentUser = null;
+          showLogin();
+        }
+      });
+    }
+    
+    // Show login screen
+    function showLogin() {
+      loginContainer.style.display = 'flex';
+      appContainer.style.display = 'none';
+    }
+    
+    // Show app screen
+    function showApp() {
+      loginContainer.style.display = 'none';
+      appContainer.style.display = 'block';
+      
+      // Update profile info
+      if (currentUser.photoURL) {
+        userPhoto.src = currentUser.photoURL;
+        profilePic.src = currentUser.photoURL;
+      }
+      profileName.textContent = currentUser.displayName || 'User';
+      profileEmail.textContent = currentUser.email;
+    }
+    
+    // Google login
+    function googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .catch(error => {
+          console.error('Login error:', error);
+          alert('Login failed. Please try again.');
+        });
+    }
+    
+    // Logout
+    function logout() {
+      auth.signOut()
+        .then(() => {
+          // Switch back to calculator tab when logging out
+          switchTab('calculator');
+        })
+        .catch(error => {
+          console.error('Logout error:', error);
+        });
+    }
+    
+    // Switch between tabs
+    function switchTab(tabId) {
+      // Update active tab
+      navTabs.forEach(tab => {
+        if (tab.dataset.tab === tabId) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      
+      // Update active content
+      tabContents.forEach(content => {
+        if (content.id === `${tabId}-tab`) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+    }
+    
+    // Calculate love percentage
+    function calculateLove(loverName, partnerName) {
+      // Simple hash function to make the percentage seem consistent for the same names
+      let combined = (loverName + partnerName).toLowerCase().replace(/\s/g, '');
+      let hash = 0;
+      
+      for (let i = 0; i < combined.length; i++) {
+        hash = combined.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      
+      // Ensure the result is between 50 and 100 for more "positive" results
+      let percentage = Math.abs(hash) % 51 + 50;
+      
+      return percentage;
+    }
+    
+    // Get random love message
+    function getRandomLoveMessage() {
+      return loveMessages[Math.floor(Math.random() * loveMessages.length)];
+    }
+    
+    // Save result to history
+    function saveToHistory(loverName, partnerName, percentage) {
+      const historyRef = db.collection('users').doc(currentUser.uid).collection('history');
+      
+      const historyItem = {
+        loverName: loverName,
+        partnerName: partnerName,
+        percentage: percentage,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        message: getRandomLoveMessage()
+      };
+      
+      return historyRef.add(historyItem)
+        .then(() => {
+          // Also update admin stats
+          updateAdminStats(loverName, partnerName, percentage);
+        });
+    }
+    
+    // Update admin statistics
+    function updateAdminStats(loverName, partnerName, percentage) {
+      const adminRef = db.collection('admin').doc('stats');
+      
+      // Use Firestore transactions to safely increment counters
+      db.runTransaction(transaction => {
+        return transaction.get(adminRef).then(doc => {
+          if (!doc.exists) {
+            transaction.set(adminRef, {
+              totalCalculations: 1,
+              lastCalculations: [{
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                userName: currentUser.displayName,
+                loverName: loverName,
+                partnerName: partnerName,
+                percentage: percentage,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              }]
+            });
+          } else {
+            const data = doc.data();
+            const lastCalculations = data.lastCalculations || [];
+            
+            // Keep only last 10 calculations
+            const updatedCalculations = [
+              {
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                userName: currentUser.displayName,
+                loverName: loverName,
+                partnerName: partnerName,
+                percentage: percentage,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              },
+              ...lastCalculations.slice(0, 9)
+            ];
+            
+            transaction.update(adminRef, {
+              totalCalculations: (data.totalCalculations || 0) + 1,
+              lastCalculations: updatedCalculations
+            });
+          }
+        });
+      }).catch(error => {
+        console.error('Error updating admin stats:', error);
+      });
+    }
+    
+    // Load user history
+    function loadUserHistory() {
+      const historyRef = db.collection('users').doc(currentUser.uid).collection('history')
+        .orderBy('timestamp', 'desc');
+      
+      historyRef.onSnapshot(snapshot => {
+        userHistory = [];
+        historyList.innerHTML = '';
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          userHistory.push({
+            id: doc.id,
+            ...data
+          });
+          
+          // Format date
+          let dateStr = 'Unknown date';
+          if (data.timestamp) {
+            dateStr = new Date(data.timestamp.toDate()).toLocaleString();
+          }
+          
+          // Create history item
+          const historyItem = document.createElement('div');
+          historyItem.className = 'history-item';
+          historyItem.innerHTML = `
+            <div class="history-info">
+              <div class="history-names">${data.loverName} ❤️ ${data.partnerName}</div>
+              <div class="history-percentage">${data.percentage}%</div>
+              <div class="history-date">${dateStr}</div>
+            </div>
+            <button class="delete-btn" data-id="${doc.id}">
+              <span class="material-icons">delete</span>
+            </button>
+          `;
+          
+          historyList.appendChild(historyItem);
+        });
+        
+        // Add event listeners to delete buttons
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', deleteHistoryItem);
+        });
+      });
+    }
+    
+    // Delete history item
+    function deleteHistoryItem(e) {
+      const historyId = e.currentTarget.dataset.id;
+      const historyRef = db.collection('users').doc(currentUser.uid).collection('history').doc(historyId);
+      
+      historyRef.delete()
+        .catch(error => {
+          console.error('Error deleting history item:', error);
+          alert('Failed to delete history item. Please try again.');
+        });
+    }
+    
+    // Clear all history
+    function clearAllHistory() {
+      if (!confirm('Are you sure you want to delete all your history? This cannot be undone.')) {
+        return;
+      }
+      
+      // Batch delete all history items
+      const batch = db.batch();
+      const historyRef = db.collection('users').doc(currentUser.uid).collection('history');
+      
+      historyRef.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        return batch.commit();
+      }).then(() => {
+        console.log('All history deleted');
+      }).catch(error => {
+        console.error('Error deleting all history:', error);
+        alert('Failed to delete history. Please try again.');
+      });
+    }
+    
+    // Event Listeners
+    googleLoginBtn.addEventListener('click', googleLogin);
+    
+    navTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        switchTab(tab.dataset.tab);
+      });
+    });
+    
+    profileBtn.addEventListener('click', () => {
+      switchTab('profile');
+    });
+    
+    loveForm.addEventListener('submit', e => {
+      e.preventDefault();
+      
+      const loverName = document.getElementById('lover-name').value.trim();
+      const partnerName = document.getElementById('partner-name').value.trim();
+      
+      if (!loverName || !partnerName) {
+        alert('Please enter both names');
+        return;
+      }
+      
+      // Calculate love percentage
+      const percentage = calculateLove(loverName, partnerName);
+      
+      // Display result
+      namesDisplay.textContent = `${loverName} ❤️ ${partnerName}`;
+      lovePercentage.textContent = `${percentage}%`;
+      loveMessage.textContent = getRandomLoveMessage();
+      
+      // Save to history
+      saveToHistory(loverName, partnerName, percentage)
+        .then(() => {
+          // Switch to result tab
+          switchTab('result');
+        })
+        .catch(error => {
+          console.error('Error saving to history:', error);
+          // Still show result even if history save fails
+          switchTab('result');
+        });
+    });
+    
+    backBtn.addEventListener('click', () => {
+      // Clear form and switch back to calculator
+      loveForm.reset();
+      switchTab('calculator');
+    });
+    
+    clearAllBtn.addEventListener('click', clearAllHistory);
+    
+    logoutBtn.addEventListener('click', logout);
+    
+    // Initialize the app
+    initApp();
+  </script>
+</body>
+</html>
